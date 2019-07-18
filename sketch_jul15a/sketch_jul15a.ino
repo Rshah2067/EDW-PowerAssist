@@ -1,29 +1,40 @@
 
 #include "FlexLibrary.h"
-
-Flex flex(A1); // Analog pin the flex sensor is on
+int deg;
+int flex_Min = 291;
+int flex_Max = 200;
+Flex flex(A3, flex_Min, flex_Max, 10, RUN_AVG, 0);
 
 String debug = "";
 
-void setup(){
+void setup() {
   Serial.begin(9600);
 
-  for(int i = 0; i < 1000; i++){
+  delay(5000);
+  for (int i = 0; i < 1000; i++) {
     flex.Calibrate();
   }
-
   Serial.print("Min Value: ");
   Serial.println(flex.getMinInput());
   Serial.print("Max Value: ");
   Serial.println(flex.getMaxInput());
 
-  delay(5000);
+
+
+
+
+
 }
 
-void loop(){
+void loop() {
   flex.updateVal();
-
-  debug = ((String)"Val: " + flex.getSensorValue());
+  deg = flex.getSensorValue();
+  debug = ((String)"flex: " + flex.getSensorValue());
+  deg = map(deg, 400, 240, 0, 180);
   Serial.println(debug);
+  //Serial.print("Degrees: ");
+  //Serial.println(deg);
+
+
 
 }
