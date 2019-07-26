@@ -1,11 +1,17 @@
 
 #include "FlexLibrary.h"
 int deg;
-int flex_Min = 291;
-int flex_Max = 200;
-Flex flex(A3, flex_Min, flex_Max, 10, RUN_AVG, 0);
+int flex_Min = 16; 
+int flex_Max = 59;
+Flex flex(A0, flex_Min, flex_Max, 10, RUN_AVG, 0);
+
+int deg2;
+int flex_Min2 = 862; 
+int flex_Max2 = 114;
+Flex flex2(A1, flex_Min2, flex_Max2, 10, RUN_AVG, 0);
 
 String debug = "";
+String debug2 = "";
 
 void setup() {
   Serial.begin(9600);
@@ -13,27 +19,29 @@ void setup() {
   delay(5000);
   for (int i = 0; i < 1000; i++) {
     flex.Calibrate();
+    flex2.Calibrate();
   }
-  Serial.print("Min Value: ");
-  Serial.println(flex.getMinInput());
-  Serial.print("Max Value: ");
-  Serial.println(flex.getMaxInput());
-
-
-
-
 
 
 }
 
 void loop() {
   flex.updateVal();
+  flex2.updateVal();
   deg = flex.getSensorValue();
-  debug = ((String)"flex: " + flex.getSensorValue());
-  deg = map(deg, 400, 240, 0, 180);
+  deg2 = flex2.getSensorValue();
+  debug = ((String)"Flex 1: " + flex.getSensorValue());
+  debug2 = ((String)"Flex 2: " + flex2.getSensorValue());
+  deg = map(deg, flex_Min, flex_Max, 0, 90);
+  deg2 = map(deg2, flex_Min2, flex_Max2, 0, 90);
   Serial.println(debug);
-  //Serial.print("Degrees: ");
-  //Serial.println(deg);
+  Serial.println(debug2);
+  Serial.print("Flex 1 Degrees: ");
+  Serial.println(deg);
+  Serial.print("Flex 2 Degrees: ");
+  Serial.println(deg2);
+  Serial.println("");
+  delay(200);
 
 
 
